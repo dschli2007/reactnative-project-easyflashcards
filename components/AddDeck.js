@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateDeck } from '../store/actions'
+import { updateDeck, selectDeck } from '../store/actions'
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
 
 class AddDeck extends Component {
@@ -18,7 +18,8 @@ class AddDeck extends Component {
 
     this.props.updateDeck(deck)
     this.setState({ text: '' })
-    this.props.navigation.navigate('decks')
+    this.props.selectDeck(deck)
+    this.props.navigation.navigate('Deck', { title: deck.title })
   }
 
   render() {
@@ -44,7 +45,8 @@ class AddDeck extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateDeck: (deck) => dispatch(updateDeck(deck))
+    updateDeck: (deck) => dispatch(updateDeck(deck)),
+    selectDeck: (deck) => dispatch(selectDeck(deck))
   }
 }
 export default connect(() => ({}), mapDispatchToProps)(AddDeck)
