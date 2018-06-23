@@ -1,10 +1,17 @@
-import { LOAD_DECKS, SELECT_DECK, UPDATE_DECK } from './actions'
+import {
+  LOAD_DECKS,
+  SELECT_DECK,
+  UPDATE_DECK,
+  LOAD_LAST_STUDY_DATE,
+  UPDATE_LAST_STUDY_DATE
+} from './actions'
 
 const initialState = {
   decks: [],
   selected: { title: '' },
   ready: false,
-  version: 0
+  version: 0,
+  lastDate: ''
 }
 
 function decks(state = initialState, action) {
@@ -39,6 +46,20 @@ function decks(state = initialState, action) {
         ...state,
         decks: newList,
         selected: state.selected.title === action.deck.title ? action.deck : state.selected,
+        version: state.version + 1
+      }
+
+    case LOAD_LAST_STUDY_DATE:
+      return {
+        ...state,
+        lastDate: action.value,
+        version: state.version + 1
+      }
+
+    case UPDATE_LAST_STUDY_DATE:
+      return {
+        ...state,
+        lastDate: action.value,
         version: state.version + 1
       }
   }

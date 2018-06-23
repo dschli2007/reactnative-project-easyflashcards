@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import Tabs from './components/Tabs'
 
 import getStore from './store/store'
-import { loadDecks } from './store/actions'
+import { loadDecks, loadLastStudyDate } from './store/actions'
 
 const store = getStore()
 
@@ -12,6 +12,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     store.dispatch(loadDecks())
+    store.dispatch(loadLastStudyDate())
   }
 
   render() {

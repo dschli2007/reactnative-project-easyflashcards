@@ -1,8 +1,8 @@
 import { AsyncStorage } from 'react-native'
-import Util from '../util/Util'
 
 class Storage {
   static Key = 'myFlashCardsStorage@Key'
+  static DateKey = 'myFlashCardsStorage@DateKey'
 
   static getData() {
     return AsyncStorage.getItem(this.Key)
@@ -13,6 +13,14 @@ class Storage {
     obj[deck.title] = deck
     const s = JSON.stringify(obj)
     await AsyncStorage.mergeItem(this.Key, s).done()
+  }
+
+  static getLastStudyDate() {
+    return AsyncStorage.getItem(this.DateKey)
+  }
+
+  static async updateLastStudyDate(value) {
+    await AsyncStorage.mergeItem(this.DateKey, value).done()
   }
 }
 

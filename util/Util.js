@@ -16,6 +16,11 @@ class Util {
     }
     return result
   }
+
+  static todayString() {
+    const d = new Date()
+    return `${d.getYear()}-${d.getMonth()}-${d.getDate()}`
+  }
 }
 
 export default Util

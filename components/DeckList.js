@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View, TouchableOpacity, Button, ScrollView } from 'react-native'
 import { selectDeck } from '../store/actions'
+import Util from '../util/Util'
 
 class DeckList extends Component {
   onPress(deck) {
@@ -10,11 +11,21 @@ class DeckList extends Component {
   }
 
   render() {
-    const { ready, decks } = this.props
+    const { ready, decks, lastDate } = this.props
     if (!ready) return <Text>Loading...</Text>
 
     return (
       <ScrollView>
+        {(!decks || decks.length === 0) && <Text>You do not have decks yet!</Text>}
+        {decks &&
+          decks.length > 0 &&
+          lastDate !== '' &&
+          Util.todayString() !== lastDate && (
+            <View style={styles.tileContainer}>
+              <Text style={styles.donotstudy}>You haven't studied today yet!</Text>
+            </View>
+          )}
+
         <View style={styles.tileContainer}>
           {decks &&
             decks.map((deck) => (
@@ -26,18 +37,14 @@ class DeckList extends Component {
                 <Text style={styles.deckCards}>{deck.questions.length} cards</Text>
               </TouchableOpacity>
             ))}
-
-            {(!decks || decks.length===0) && (
-              <Text>You do not have decks yet!</Text>
-            )}
         </View>
       </ScrollView>
     )
   }
 }
 
-function mapStateToProps({ decks, ready }) {
-  return { decks, ready }
+function mapStateToProps({ decks, ready, lastDate }) {
+  return { decks, ready, lastDate }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -68,5 +75,6 @@ const styles = StyleSheet.create({
   deckCards: {
     fontSize: 10,
     color: 'grey'
-  }
+  },
+  donotstudy: { color: 'red' }
 })

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateDeck } from '../store/actions'
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { updateLastStudyDate } from '../store/actions'
 
 class Quiz extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Quiz extends Component {
   }
 
   whatToSay(correct, totalQuestions) {
+    this.props.updateLastStudyDate()
     if (correct === totalQuestions) return "You're perfect!"
     if (correct === 0) return "I don't know what to  say! You got nothing!"
     if (correct >= totalQuestions / 2) return "You're getting good!"
@@ -103,7 +105,7 @@ function mapStateToProps({ selected }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //updateDeck: (deck) => dispatch(updateDeck(deck))
+    updateLastStudyDate: () => dispatch(updateLastStudyDate())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
