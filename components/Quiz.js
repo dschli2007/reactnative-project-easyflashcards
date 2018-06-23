@@ -7,7 +7,11 @@ import { updateLastStudyDate } from '../store/actions'
 class Quiz extends Component {
   constructor(props) {
     super(props)
-    this.state = {
+    this.state = this.initialState()
+  }
+
+  initialState() {
+    return {
       index: 0,
       correct: 0,
       incorrect: 0,
@@ -28,6 +32,14 @@ class Quiz extends Component {
       index: prev.index + 1,
       showQuestion: true
     }))
+  }
+
+  restartQuiz() {
+    this.setState(this.initialState())
+  }
+
+  backToDeck() {
+    this.props.navigation.pop()
   }
 
   whatToSay(correct, totalQuestions) {
@@ -55,13 +67,20 @@ class Quiz extends Component {
         )}
 
         {index >= totalQuestions && (
-          <View style={styles.center}>
+          <View style={styles.container}>
             <View style={styles.box}>
               <Text>Well Done!</Text>
               <Text>
                 You got {correct} out of {totalQuestions} questions!
               </Text>
               <Text>{this.whatToSay(correct, totalQuestions)}</Text>
+            </View>
+
+            <View style={styles.btncontainer}>
+              <Button color="green" title="Restart Quiz" onPress={() => this.restartQuiz()} />
+            </View>
+            <View style={styles.btncontainer}>
+              <Button color="blue" title="Back to Deck" onPress={() => this.backToDeck()} />
             </View>
           </View>
         )}

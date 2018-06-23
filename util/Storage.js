@@ -1,8 +1,8 @@
 import { AsyncStorage } from 'react-native'
 
 class Storage {
-  static Key = 'myFlashCardsStorage@Key'
-  static DateKey = 'myFlashCardsStorage@DateKey'
+  static Key = 'FlashCardsStorage@Key'
+  static DateKey = 'FlashCardsStorage@DateKey'
 
   static getData() {
     return AsyncStorage.getItem(this.Key)
@@ -20,7 +20,7 @@ class Storage {
   }
 
   static async updateLastStudyDate(value) {
-    await AsyncStorage.mergeItem(this.DateKey, value).done()
+    await AsyncStorage.setItem(this.DateKey, value).done()
   }
 }
 
