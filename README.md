@@ -13,6 +13,7 @@ To run this project just execute:
    - npm start
    - After start select desired platform simulator (ios or android)
 
+This project was developed and tested on android using Genymotion.
 
 For any question please contact dschli2007 at gmail.com
 
