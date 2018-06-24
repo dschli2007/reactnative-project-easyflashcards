@@ -15,6 +15,11 @@ To run this project just execute:
 
 This project was developed and tested on android using Genymotion.
 
+# history
+- 1.0 Initial version
+- 1.1 Daily Notifications and initial default decks
+
+
 For any question please contact dschli2007 at gmail.com
 
 Dirceu Schlickmann
