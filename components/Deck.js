@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: 400
   },
   deckName: {
-    fontSize: 30
+    fontSize: 24
   },
   deckCards: {
     fontSize: 12,

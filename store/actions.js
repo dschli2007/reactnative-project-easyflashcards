@@ -1,5 +1,6 @@
 import Storage from '../util/Storage'
 import Util from '../util/Util'
+import { defaultDecks } from './defaultDecks'
 
 export const LOAD_DECKS = 'LOAD_DECKS'
 export const UPDATE_DECK = 'UPDATE_DECK'
@@ -9,12 +10,16 @@ export const loadDecks = () => (dispatch) => {
   Storage.getData()
     .then((t) => Util.textToObj(t))
     .then((r) => Util.deckArrayFromObj(r))
-    .then((items) =>
+    .then((items) => {
+      if (items.length === 0) {
+        items = Util.deckArrayFromObj(defaultDecks)
+        Storage.setFullData(defaultDecks)
+      }
       dispatch({
         type: LOAD_DECKS,
         decks: items
       })
-    )
+    })
 }
 
 export const selectDeck = (deck) => {
