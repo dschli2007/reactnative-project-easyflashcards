@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateDeck } from '../store/actions'
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
-import { updateLastStudyDate } from '../store/actions'
+import Util from '../util/Util'
 
 class Quiz extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class Quiz extends Component {
   }
 
   whatToSay(correct, totalQuestions) {
-    this.props.updateLastStudyDate()
+    Util.clearLocalNotifications().then(Util.enableLocalNotifications)
     if (correct === totalQuestions) return "You're perfect!"
     if (correct === 0) return "I don't know what to  say! You got nothing!"
     if (correct >= totalQuestions / 2) return "You're getting good!"
@@ -122,12 +122,7 @@ function mapStateToProps({ selected }) {
   return { deck: selected }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updateLastStudyDate: () => dispatch(updateLastStudyDate())
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
+export default connect(mapStateToProps)(Quiz)
 
 const styles = StyleSheet.create({
   container: {

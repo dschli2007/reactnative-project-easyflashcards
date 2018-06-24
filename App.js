@@ -2,17 +2,19 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import Tabs from './components/Tabs'
-
 import getStore from './store/store'
 import { loadDecks, loadLastStudyDate } from './store/actions'
-
+import Util from './util/Util'
 const store = getStore()
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
     store.dispatch(loadDecks())
-    store.dispatch(loadLastStudyDate())
+    Util.enableLocalNotifications()
   }
 
   render() {

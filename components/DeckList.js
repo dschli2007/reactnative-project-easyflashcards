@@ -1,41 +1,56 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, TouchableOpacity, Button, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  ScrollView,
+  Animated
+} from 'react-native'
 import { selectDeck } from '../store/actions'
 import Util from '../util/Util'
 
 class DeckList extends Component {
+  state = {
+    opacity: new Animated.Value(1),
+    clickedDeck: null
+  }
+
   onPress(deck) {
-    this.props.selectDeck(deck)
-    this.props.navigation.navigate('Deck', { title: deck.title })
+    const { opacity } = this.state
+    this.setState({ clickedDeck: deck })
+    Animated.timing(opacity, { toValue: 0, duration: 750 }).start(() => {
+      this.props.selectDeck(deck)
+      this.props.navigation.navigate('Deck', { title: deck.title })
+      this.setState({ opacity: new Animated.Value(1), clickedDeck: null })
+    })
+  }
+
+  getOpacity(deck) {
+    const { opacity, clickedDeck } = this.state
+    if (deck === clickedDeck || clickedDeck === null) return {}
+    return { opacity }
   }
 
   render() {
-    const { ready, decks, lastDate } = this.props
+    const { ready, decks } = this.props
     if (!ready) return <Text>Loading...</Text>
 
     return (
       <ScrollView>
         {(!decks || decks.length === 0) && <Text>You do not have decks yet!</Text>}
-        {decks &&
-          decks.length > 0 &&
-          lastDate !== '' &&
-          Util.todayString() !== lastDate && (
-            <View style={styles.tileContainer}>
-              <Text style={styles.donotstudy}>You haven't studied today yet!</Text>
-            </View>
-          )}
 
         <View style={styles.tileContainer}>
           {decks &&
             decks.map((deck) => (
-              <TouchableOpacity
-                style={styles.tile}
-                key={deck.title}
-                onPress={() => this.onPress(deck)}>
-                <Text style={styles.deckName}>{deck.title}</Text>
-                <Text style={styles.deckCards}>{deck.questions.length} cards</Text>
-              </TouchableOpacity>
+              <Animated.View style={this.getOpacity(deck)} key={deck.title}>
+                <TouchableOpacity style={styles.tile} onPress={() => this.onPress(deck)}>
+                  <Text style={styles.deckName}>{deck.title}</Text>
+                  <Text style={styles.deckCards}>{deck.questions.length} cards</Text>
+                </TouchableOpacity>
+              </Animated.View>
             ))}
         </View>
       </ScrollView>
@@ -43,8 +58,8 @@ class DeckList extends Component {
   }
 }
 
-function mapStateToProps({ decks, ready, lastDate }) {
-  return { decks, ready, lastDate }
+function mapStateToProps({ decks, ready }) {
+  return { decks, ready }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -75,6 +90,5 @@ const styles = StyleSheet.create({
   deckCards: {
     fontSize: 10,
     color: 'grey'
-  },
-  donotstudy: { color: 'red' }
+  }
 })
